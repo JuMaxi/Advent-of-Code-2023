@@ -10,14 +10,15 @@ namespace Adventoofcode2023.Day02
     {
         private string[] ReadFile()
         {
-            string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day02/sample-day02.txt");
-            //string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day02/input-day02.txt");
+            //string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day02/sample-day02.txt");
+            string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day02/input-day02.txt");
 
             return input;
         }
 
         public int SumPowerSetsCubs()
         {
+            int sum = 0;
             string[] input = ReadFile();
 
             foreach (string l in input)
@@ -61,15 +62,18 @@ namespace Adventoofcode2023.Day02
                     }
                 }
 
+                int m = 1;
+
                 for(int i = 0; i < cubs.Count; i++)
                 {
                     var item = cubs.ElementAt(i);
 
-                    //cubs[item.Key] = (item.Value * 2);
+                    m = m * cubs[item.Key];
                 }
 
+                sum += m;
             }
-            return 0;
+            return sum;
         }
     }
 }
