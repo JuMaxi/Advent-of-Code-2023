@@ -17,5 +17,15 @@ namespace Adventoofcode2023.Day02
 
             Assert.Equal(8, sum);
         }
+
+        [Fact]
+        public void Test02()
+        {
+            Part02 part02 = new();
+            
+            int sum = part02.SumPowerSetsCubs();
+
+            Assert.Equal(2286, sum);
+        }
     }
 }
