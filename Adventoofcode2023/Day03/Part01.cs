@@ -48,7 +48,12 @@ namespace Adventoofcode2023.Day03
                             //verificar adjacentes na linha anterior
                             if (i > 0)
                             {
-                                for (int j = ii + next; j >= ii - n.Length; j--)
+                                int t = ii;
+                                if (ii < n.Length)
+                                {
+                                    t = n.Length;
+                                }
+                                for (int j = t - n.Length; j <= t + next; j++)
                                 {
                                     if (input[i - 1][j] != '.'
                                         && numbers.IndexOf(input[i - 1][j]) < 0)
