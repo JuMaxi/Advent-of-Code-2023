@@ -35,18 +35,20 @@ namespace Adventoofcode2023.Day03
                     {
                         n += Convert.ToString(c);
 
-                        int count = 1;
-                        if (ii + 1 == input[i].Length)
+                        int next = 1;
+                        if (ii == input[i].Length - 1)
                         {
-                            count = 0;
+                            next = 0;
                         }
 
-                        if (input[i].IndexOf('.', ii + 1, count) >= 0)
+                        if (input[i].IndexOf('.', ii + next, 1) >= 0
+                            || next == 0
+                            || numbers.IndexOf(input[i][ii + next]) < 0)
                         {
                             //verificar adjacentes na linha anterior
                             if (i > 0)
                             {
-                                for (int j = ii + 1 - n.Length; j <= ii + 1; j++)
+                                for (int j = ii + next; j >= ii - n.Length; j--)
                                 {
                                     if (input[i - 1][j] != '.'
                                         && numbers.IndexOf(input[i - 1][j]) < 0)
@@ -58,17 +60,15 @@ namespace Adventoofcode2023.Day03
                             }
 
                             //verificar posicao inicial e final na mesma linha do numero.
-                            if (input[i][ii + 1] != '.')
+                            if (input[i][ii + next] != '.' && input[i].Length - 1 != ii)
                             {
                                 sum += Convert.ToInt32(n);
-                                break;
                             }
                             if (ii - n.Length > 0)
                             {
                                 if (input[i][ii - n.Length] != '.')
                                 {
                                     sum += Convert.ToInt32(n);
-                                    break;
                                 }
                             }
 
@@ -77,9 +77,9 @@ namespace Adventoofcode2023.Day03
                             {
                                 if (ii < n.Length)
                                 {
-                                    ii++;
+                                    ii = n.Length;
                                 }
-                                for (int j = ii - n.Length; j <= ii + 1; j++)
+                                for (int j = ii - n.Length; j <= ii + next; j++)
                                 {
                                     if (input[i + 1][j] != '.'
                                         && numbers.IndexOf(input[i + 1][j]) < 0)
@@ -90,20 +90,6 @@ namespace Adventoofcode2023.Day03
                                 }
                             }
                             n = "";
-                        }
-                        else
-                        {
-                            int cc = ii + 1;
-
-                            if (ii + 1 == input[i].Length)
-                            {
-                                cc = ii;
-                            }
-                            if (numbers.IndexOf(input[i][cc]) < 0)
-                            {
-                                sum += Convert.ToInt32(n);
-                                break;
-                            }
                         }
                     }
                 }
