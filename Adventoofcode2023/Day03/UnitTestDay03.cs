@@ -21,14 +21,19 @@ namespace Adventoofcode2023.Day03
 
             Assert.Equal(533775, sum2);
         }
-        [Fact] 
-        public void Test02() 
+
+        [Fact]
+        public void Test02()
         {
             Part02 part02 = new();
 
-            int sum = part02.SumParts();
+            //int sum = part02.SumParts();
 
-            Assert.Equal(467835, sum);
+            //Assert.Equal(467835, sum);
+
+            int sumInput = part02.SumParts();
+
+            Assert.Equal(78236071, sumInput);
         }
     }
 }

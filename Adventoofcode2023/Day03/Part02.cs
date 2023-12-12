@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,123 +12,104 @@ namespace Adventoofcode2023.Day03
     {
         private string[] ReadFile()
         {
-            string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day03/sample-day03.txt");
-            //string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day03/input-day03.txt");
+            //string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day03/sample-day03.txt");
+            string[] input = File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day03/input-day03.txt");
 
             return input;
         }
 
-        private int ReceiveInput()
+        private int FindCharStarIntoInput(string[] input, int line)
+        {
+            int number = 0;
+            for (int column = 0; column < input[line].Length; column++)
+            {
+                char c = input[line][column];
+
+                if (c == '*')
+                {
+                    List<int> numbersAround = GetNumberSurroundingStar(input, line, column);
+                    number += MultiplyNumbers(numbersAround);
+                }
+            }
+
+            return number;
+        }
+
+        private int MultiplyNumbers(List<int> numbersAround)
+        {
+            int number = 0;
+
+            if (numbersAround.Count == 2)
+            {
+                number = numbersAround[0] * numbersAround[1];
+            }
+
+            return number;
+        }
+
+
+        private List<int> GetNumberSurroundingStar(string[] input, int line, int column)
+        {
+            List<int> result = new();
+
+            int t = 1;
+
+            if (column == 0
+                || column == input[line].Length - 1)
+            { t = 0; }
+
+            if (line > 0)
+            {
+                result.Add(GetNumberAtPosition(input, line - 1, column - t));
+                result.Add(GetNumberAtPosition(input, line - 1, column));
+                result.Add(GetNumberAtPosition(input, line - 1, column + t));
+            }
+
+            if (line < input.Length)
+            {
+                result.Add(GetNumberAtPosition(input, line + 1, column - t));
+                result.Add(GetNumberAtPosition(input, line + 1, column));
+                result.Add(GetNumberAtPosition(input, line + 1, column + t));
+            }
+
+            result.Add(GetNumberAtPosition(input, line, column - t));
+            result.Add(GetNumberAtPosition(input, line, column + t));
+
+            result = result.Where(item => item > 0).ToList();
+            result = result.Distinct().ToList();
+
+            return result;
+        }
+
+        private int GetNumberAtPosition(string[] input, int line, int column)
+        {
+            if (!char.IsDigit(input[line][column]))
+                return 0;
+
+            string number = "";
+
+            while (column > 0 && char.IsDigit(input[line][column - 1]))
+                column--;
+
+            while (column < input[line].Length && char.IsDigit(input[line][column]))
+            {
+                number = number + input[line][column].ToString();
+                column++;
+            }
+
+            return Convert.ToInt32(number);
+        }
+
+        public int SumParts()
         {
             string[] input = ReadFile();
             int sum = 0;
 
-            for (int i = 0; i < input.Length; i++)
+            for (int line = 0; line < input.Length; line++)
             {
-                sum = TakeCharInput(input, i, 0);
+                int number = FindCharStarIntoInput(input, line);
+                sum += number;
             }
-
-            return sum;
-        }
-
-        private int TakeCharInput(string[] input, int i, int index)
-        {
-            string numbers = "0123456789";
-            int sum = 0;
-            string n = "";
-
-            for (int ii = index; ii < input[i].Length; ii++)
-            {
-                char c = input[i][ii];
-
-                if (c == '*')
-                {
-                    int p = FindNumberPreviousLine(i, ii, input, numbers);
-                }
-            }
-            return sum;
-        }
-
-
-
-        private int CheckPreviousLineIndexAdjacentsSpecialCharacters(int i, int ii, string[] input, string numbers)
-        {
-            if (i > 0)
-            {
-                if (numbers.IndexOf(input[i - 1][ii-1]) >= 0)
-                {
-                    return -1;
-                }
-                else
-                {
-                    if (numbers.IndexOf(input[i - 1][ii + 1]) >= 0)
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        if(numbers.IndexOf(input[i - 1][ii]) >= 0)
-                        {
-                            return 0;
-                        }
-                    }
-                }
-            }
-            return -2;
-        }
-        private int FindNumberPreviousLine(int i, int ii, string[] input, string numbers)
-        {
-            int previousNumber = 0;
-            int p = CheckPreviousLineIndexAdjacentsSpecialCharacters(i, ii, input, numbers);
-
-            if(p == 0 )
-            {
-                return input[i - 1][ii];
-            }
-            else
-            {
-                if(p != -2)
-                {
-                    p = p + ii;
-                    string number = "";
-
-                    if (numbers.IndexOf(input[i - 1][ii]) >= 0)
-                    {
-                        number = Convert.ToString(input[i - 1][ii]);
-                    }
-
-                    while (p >= 0 && p < input[i - 1].Length
-                        && numbers.IndexOf(input[i - 1][p]) >= 0)
-                    {
-
-                        if (p < ii) 
-                        {
-                            string last = Convert.ToString(numbers.IndexOf(input[i - 1][p]));
-                            number = last + number;
-                        }
-                        else
-                        {
-                            number += Convert.ToString(numbers.IndexOf(input[i - 1][p]));
-                        }
-                        
-                        p = p < ii ? p - 1 : p + 1;
-                    }
-                    previousNumber = Convert.ToInt32(number);
-                }
-                
-            }
-
-            return previousNumber;
-        }
-        
-
-
-        public int SumParts()
-        {
-            int sum = ReceiveInput();
-
-           
-
 
             return sum;
         }
