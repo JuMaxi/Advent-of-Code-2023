@@ -17,5 +17,16 @@ namespace Adventoofcode2023.Day04
 
             Assert.Equal(13, sum);
         }
+
+        [Fact]
+        public void Test02()
+        {
+            Part02 part02 = new();
+
+            int sum = part02.SumCards();
+
+            Assert.Equal(30, sum);
+        }
+
     }
 }
