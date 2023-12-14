@@ -31,8 +31,7 @@ namespace Adventoofcode2023.Day05
         private long CheckIfLineIsDigit(string[] input, string[] seeds)
         {
             long location = long.MaxValue;
-
-            List<List<long>> rangesLong = ExtractNumbers(input);
+            List<List<long>> rangesLong = GetNumbersFromInput(input);
 
             for (long i = 0; i < seeds.Length - 1; i += 2)
             {
@@ -51,18 +50,7 @@ namespace Adventoofcode2023.Day05
                             if (seedLong >= rangesLong[line][1]
                                 && seedLong < rangesLong[line][1] + rangesLong[line][2])
                             {
-                                long n = 0;
-
-                                if (rangesLong[line][1] >= rangesLong[line][0])
-                                {
-                                    n = rangesLong[line][1] - rangesLong[line][0];
-                                    seedLong -= n;
-                                }
-                                else
-                                {
-                                    n = rangesLong[line][0] - rangesLong[line][1];
-                                    seedLong += n;
-                                }
+                                seedLong = GetUpdatedNumberSeed(rangesLong, seedLong, line);
 
                                 bool skipSuccessful = false;
                                 for (int k = line + 1; k < input.Length; k++)
@@ -85,7 +73,7 @@ namespace Adventoofcode2023.Day05
             return location;
         }
 
-        private static List<List<long>> ExtractNumbers(string[] input)
+        private static List<List<long>> GetNumbersFromInput(string[] input)
         {
             List<List<long>> rangesLong = new(input.Length);
             for (int line = 0; line < input.Length; line++)
@@ -94,6 +82,7 @@ namespace Adventoofcode2023.Day05
                 {
                     List<long> ranger = input[line].Split(" ").Select(str => Convert.ToInt64(str)).ToList();
                     rangesLong.Add(ranger);
+
                 }
                 else
                 {
@@ -102,6 +91,24 @@ namespace Adventoofcode2023.Day05
             }
 
             return rangesLong;
+        }
+
+        private static long GetUpdatedNumberSeed(List<List<long>> rangesLong, long seedLong, int line)
+        {
+            long n = 0;
+
+            if (rangesLong[line][1] >= rangesLong[line][0])
+            {
+                n = rangesLong[line][1] - rangesLong[line][0];
+                seedLong -= n;
+            }
+            else
+            {
+                n = rangesLong[line][0] - rangesLong[line][1];
+                seedLong += n;
+            }
+
+            return seedLong;
         }
 
         public long GetLowestLocation()
