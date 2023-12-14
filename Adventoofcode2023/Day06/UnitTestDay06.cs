@@ -20,5 +20,15 @@ namespace Adventoofcode2023.Day06
             Assert.Equal(74698, possibilities);
 
         }
+
+        [Fact]
+        public void Test02()
+        {
+            Part02 part02 = new();
+
+            long possibilities = part02.SumPossibilitiesWin();
+
+            Assert.Equal(71503, possibilities);
+        }
     }
 }
