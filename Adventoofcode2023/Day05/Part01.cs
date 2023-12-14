@@ -11,8 +11,8 @@ namespace Adventoofcode2023.Day05
     {
         private string[] ReadFile()
         {
-            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/sample-day05.txt");
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/input-day05.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/sample-day05.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/input-day05.txt");
 
         }
         private List<long> SplitFile()

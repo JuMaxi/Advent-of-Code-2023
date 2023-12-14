@@ -17,5 +17,15 @@ namespace Adventoofcode2023.Day05
 
             Assert.Equal(35, lowestLocation);
         }
+
+        [Fact]
+        public void Test02()
+        {
+            Part02 part02 = new();
+
+            long lowestLocation = part02.GetLowestLocation();
+
+            Assert.Equal(46, lowestLocation);
+        }
     }
 }
