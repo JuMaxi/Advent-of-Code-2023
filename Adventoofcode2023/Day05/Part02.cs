@@ -10,11 +10,11 @@ namespace Adventoofcode2023.Day05
     {
         private string[] ReadFile()
         {
-            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/sample-day05.txt");
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/input-day05.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/sample-day05.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day05/input-day05.txt");
 
         }
-        private List<long> SplitFile()
+        private long SplitFile()
         {
             string[] input = ReadFile();
             input = input.Where(item => item != "").ToArray();
@@ -23,48 +23,44 @@ namespace Adventoofcode2023.Day05
             string[] seeds = s[1].Split(" ");
             seeds = seeds.Where(item => item != "").ToArray();
 
-            List<long> locations = CheckIfLineIsDigit(input, seeds);
+            long location = CheckIfLineIsDigit(input, seeds);
 
-            return locations;
+            return location;
         }
 
-        private List<long> CheckIfLineIsDigit(string[] input, string[] seeds)
+        private long CheckIfLineIsDigit(string[] input, string[] seeds)
         {
-            List<long> locations = new();
+            long location = long.MaxValue;
+
+            List<List<long>> rangesLong = ExtractNumbers(input);
 
             for (long i = 0; i < seeds.Length - 1; i += 2)
             {
                 long seedLong = 0;
+                long seedInitial = Convert.ToInt64(seeds[i]);
+                long seedFinal = seedInitial + Convert.ToInt64(seeds[i + 1]);
 
-                for (long ii = 0; ii < Convert.ToInt64(seeds[i + 1]); ii++)
+                for (long ii = seedInitial; ii < seedFinal; ii++)
                 {
-                    seedLong = Convert.ToInt64(seeds[i]) + ii;
+                    seedLong = ii;
 
                     for (int line = 2; line < input.Length; line++)
                     {
                         if (char.IsDigit(input[line][0]))
                         {
-                            string[] ranges = input[line].Split(" ");
-                            long[] rangesLong = new long[ranges.Length];
-
-                            for (int j = 0; j < ranges.Length; j++)
-                            {
-                                rangesLong[j] = Convert.ToInt64(ranges[j]);
-                            }
-
-                            if (seedLong >= rangesLong[1]
-                                && seedLong < rangesLong[1] + rangesLong[2])
+                            if (seedLong >= rangesLong[line][1]
+                                && seedLong < rangesLong[line][1] + rangesLong[line][2])
                             {
                                 long n = 0;
 
-                                if (rangesLong[1] >= rangesLong[0])
+                                if (rangesLong[line][1] >= rangesLong[line][0])
                                 {
-                                    n = rangesLong[1] - rangesLong[0];
+                                    n = rangesLong[line][1] - rangesLong[line][0];
                                     seedLong -= n;
                                 }
                                 else
                                 {
-                                    n = rangesLong[0] - rangesLong[1];
+                                    n = rangesLong[line][0] - rangesLong[line][1];
                                     seedLong += n;
                                 }
 
@@ -83,26 +79,34 @@ namespace Adventoofcode2023.Day05
                             }
                         }
                     }
-                    locations.Add(seedLong);
+                    location = Math.Min(location, seedLong);
                 }
-
             }
-            return locations;
+            return location;
+        }
+
+        private static List<List<long>> ExtractNumbers(string[] input)
+        {
+            List<List<long>> rangesLong = new(input.Length);
+            for (int line = 0; line < input.Length; line++)
+            {
+                if (!string.IsNullOrWhiteSpace(input[line]) && char.IsDigit(input[line][0]))
+                {
+                    List<long> ranger = input[line].Split(" ").Select(str => Convert.ToInt64(str)).ToList();
+                    rangesLong.Add(ranger);
+                }
+                else
+                {
+                    rangesLong.Add(new());
+                }
+            }
+
+            return rangesLong;
         }
 
         public long GetLowestLocation()
         {
-            List<long> locations = SplitFile();
-
-            long lowerLocation = locations[0];
-            for (int i = 1; i < locations.Count; i++)
-            {
-                if (lowerLocation > locations[i])
-                {
-                    lowerLocation = locations[i];
-                }
-            }
-            return lowerLocation;
+            return SplitFile();
         }
     }
 }
