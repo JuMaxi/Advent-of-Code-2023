@@ -10,8 +10,8 @@ namespace Adventoofcode2023.Day06
     {
         private string[] ReadFile()
         {
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day06/sample-day06.txt");
-            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day06/input-day06.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day06/sample-day06.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day06/input-day06.txt");
 
         }
 
@@ -37,7 +37,7 @@ namespace Adventoofcode2023.Day06
 
             long possibilities = 0;
 
-            for (long i = 14; i <= 71516; i++)
+            for (long i = 0; i <= timeAndDistance[0]; i++)
             {
                 long millimeters = (timeAndDistance[0] - i) * i;
 
