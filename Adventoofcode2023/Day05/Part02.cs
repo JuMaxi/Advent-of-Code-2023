@@ -55,7 +55,7 @@ namespace Adventoofcode2023.Day05
                                 bool skipSuccessful = false;
                                 for (int k = line + 1; k < input.Length; k++)
                                 {
-                                    if (char.IsLetter(input[i][0]))
+                                    if (char.IsLetter(input[k][0]))
                                     {
                                         line = k;
                                         skipSuccessful = true;
