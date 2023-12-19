@@ -19,5 +19,14 @@ namespace Adventoofcode2023.Day08
             Assert.Equal(6, Steps);
 
         }
+        [Fact]
+        public void Test2()
+        {
+            Part02 part02 = new();
+
+            long Steps = part02.SumSteps();
+
+            Assert.Equal(6, Steps);
+        }
     }
 }

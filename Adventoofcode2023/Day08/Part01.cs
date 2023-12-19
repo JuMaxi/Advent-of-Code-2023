@@ -11,8 +11,8 @@ namespace Adventoofcode2023.Day08
         private string[] ReadFile()
         {
             //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day08/sample-day08.txt");
-            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day08/sample2-day08.txt");
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day08/input-day08.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day08/sample2-day08.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day08/input-day08.txt");
 
         }
 
