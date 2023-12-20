@@ -24,7 +24,7 @@ namespace Adventoofcode2023.Day08
         {
             Part02 part02 = new();
 
-            long Steps = part02.SumSteps();
+            long Steps = part02.SumMMCDivisibleNumbers();
 
             Assert.Equal(6, Steps);
         }

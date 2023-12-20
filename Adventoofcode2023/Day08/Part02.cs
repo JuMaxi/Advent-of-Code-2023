@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Adventoofcode2023.Day08
 {
@@ -47,7 +48,7 @@ namespace Adventoofcode2023.Day08
             }
             return nodesEndA;
         }
-        public long SumSteps()
+        private List<long> SumStepsNodesEndedA()
         {
             string[] input = ReadFile();
             string directions = input[0];
@@ -56,42 +57,81 @@ namespace Adventoofcode2023.Day08
 
             List<string> nodesEndA = FindNodesEndedWithA(nodes);
 
-            long sum = 0;
+            List<long> sumNodes = new();
 
 
-            for (int charDirections = 0; charDirections < directions.Length; charDirections++)
+            for (int indexNodesEndA = 0; indexNodesEndA < nodesEndA.Count; indexNodesEndA++)
             {
-                int whereToGo = 0;
-                if (directions[charDirections] == 'R') { whereToGo = 1; }
+                long sum = 0;
 
-                long sumZ = 0;
-
-                for(int indexNodesEndA = 0; indexNodesEndA < nodesEndA.Count; indexNodesEndA++)
+                for (int charDirections = 0; charDirections < directions.Length; charDirections++)
                 {
+                    int whereToGo = 0;
+                    if (directions[charDirections] == 'R') { whereToGo = 1; }
+
                     string key = nodesEndA[indexNodesEndA];
 
                     var nextNode = nodes[key][whereToGo];
 
                     nodesEndA[indexNodesEndA] = nextNode;
 
-                    if (nextNode.EndsWith('Z')) { sumZ++; }
-                }
-                sum++;
-                
+                    sum++;
 
-                if (sumZ == nodesEndA.Count)
-                {
-                    break;
-                }
-                else
-                {
-                    if (charDirections == directions.Length - 1)
+                    if (nextNode.EndsWith('Z'))
                     {
-                        charDirections = -1;
+                        break;
+                    }
+                    else
+                    {
+                        if (charDirections == directions.Length - 1)
+                        {
+                            charDirections = -1;
+                        }
                     }
                 }
+                sumNodes.Add(sum);
             }
-            return sum;
+            
+            return sumNodes;
+        }
+
+        private List<long> FindDivisibleNumbers()
+        {
+            List<long> sumNodes = SumStepsNodesEndedA();
+            List<long> divisibleNumbers = new();
+
+            for(int line = 0; line < sumNodes.Count; line++)
+            {
+                int i = 2;
+                while (sumNodes[line] > 1)
+                {
+                    if (sumNodes[line] % i == 0)
+                    {
+                        if (!divisibleNumbers.Contains(i))
+                        {
+                            divisibleNumbers.Add(i);
+                        }
+                        sumNodes[line] = sumNodes[line] / i;
+                    }
+                    i++;
+                }
+                
+            }
+            return divisibleNumbers;    
+        }
+
+        public long SumMMCDivisibleNumbers()
+        {
+            List<long> divisibleNumbers = FindDivisibleNumbers();
+
+            long mmc = 1;
+
+            foreach(long number in divisibleNumbers)
+            {
+                mmc *= number;
+            }
+            
+            return mmc;
         }
     }
 }
