@@ -39,7 +39,6 @@ namespace Adventoofcode2023.Day09
             List<List<long>> histories = SplitFile();
 
             long resultFinal = 0;
-            int l = 0;
 
             foreach (List<long> list in histories)
             {
@@ -48,15 +47,8 @@ namespace Adventoofcode2023.Day09
                 newHistories.Add(list);
 
                 int indexList = 0;
-                long sum = long.MaxValue;
                 int line = 0;
 
-                l = l + 1;
-
-                if(l == 80)
-                {
-
-                }
                 while (newHistories[newHistories.Count - 1].Any(item => item != 0))
                 {
                     newLongs.Add(newHistories[line][indexList + 1] - newHistories[line][indexList]);
