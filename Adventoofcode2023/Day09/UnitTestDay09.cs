@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,16 @@ namespace Adventoofcode2023.Day09
             long sum = part01.SumExtrapolatedValues();
 
             Assert.Equal(114, sum);
+        }
+
+        [Fact]
+        public void Test02()
+        {
+            Part02 part02 = new();
+
+            long sum = part02.SumExtrapolatedValues();
+
+            Assert.Equal(2, sum);
         }
     }
 }

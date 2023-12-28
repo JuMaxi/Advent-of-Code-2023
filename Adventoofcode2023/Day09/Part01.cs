@@ -8,14 +8,14 @@ namespace Adventoofcode2023.Day09
 {
     public class Part01
     {
-        private string[] ReadFile()
+        private static string[] ReadFile()
         {
-            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day09/sample-day09.txt");
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day09/input-day09.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day09/sample-day09.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day09/input-day09.txt");
 
         }
 
-        private List<List<long>> SplitFile()
+        private static List<List<long>> SplitFile()
         {
             string[] input = ReadFile();
             List<List<long>> histories = new();
