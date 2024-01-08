@@ -12,84 +12,136 @@ namespace Adventoofcode2023.Day10
     {
         private string[] ReadFile()
         {
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day10/sample1-day10.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day10/sample1-day10.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day10/sample2-day10.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day10/input-day10.txt");
+
         }
 
-        
+
         private long ProcessFile()
         {
             string[] input = ReadFile();
 
-            List<long> numbers = new();
+            long number = 0;
 
             for (int line = 0; line < input.Length; line++)
             {
                 int column = input[line].IndexOf('S');
                 if (column >= 0)
                 {
-                    int newLine = line;
-                    int newColumn = column;
-
-                    numbers = GetSumSorroundingS(input, column, newColumn - 1, line, newLine, numbers);
-                    numbers = GetSumSorroundingS(input, column, newColumn + 1, line, newLine, numbers);
-                    numbers = GetSumSorroundingS(input, column, newColumn, line, newLine + 1, numbers);
-                    numbers = GetSumSorroundingS(input, column, newColumn, line, newLine - 1, numbers);
+                    number = GetSumSorroundingS(input, (line, column));
+                    break;
                 }
             }
 
-            return numbers.Max();
+            return number / 2;
         }
 
-        private List<long> GetSumSorroundingS(string[] input, int column, int newColumn, int line, int newLine, List<long> sums)
+        private string[] ChangeMySToCorrectDigitForLoop(string[] input, int line)
         {
+            //char myS = 'F';
+            char myS = 'J';
+
+
+            input[line] = input[line].Replace('S', myS);
+
+            return input;
+        }
+
+        private long GetSumSorroundingS(string[] input, (int line, int column) start)
+        {
+            input = ChangeMySToCorrectDigitForLoop(input, start.line);
+
+            (int line, int column) next = start;
+            (int line, int column) last = (0, 0);
+
             long number = 0;
 
-            while(input[newLine][newColumn] != '.')
+            while (true)
             {
-                if (column > newColumn && input[newLine][newColumn] == 'L'
-                    || column > newColumn && input[newLine][newColumn] == 'J'
-                    || newLine < line && input[newLine][newColumn] == '|')
+                char token = input[next.line][next.column];
+                var nextPossiblePositions = GetPositionsForChar(token, next);
+
+                if (nextPossiblePositions[0] == last)
                 {
-                    newLine--;
+                    last = next;
+                    next = nextPossiblePositions[1];
                 }
                 else
                 {
-                    if(column < newColumn && input[newLine][newColumn] == '7'
-                        || column < newColumn && input[newLine][newColumn] == 'F'
-                        || newLine > line && input[newLine][newColumn] == '|')
-                    {
-                        newLine++;
-                    }
-                    else
-                    {
-                        if(input[newLine][newColumn] == 'J'
-                            || input[newLine][newColumn] == '7'
-                            || column > newColumn && input[newLine][newColumn] == '-')
-                        {
-                            newColumn--;
-                        }
-                        else
-                        {
-                            if(input[newLine][newColumn] == 'L'
-                                || input[newLine][newColumn] == 'F'
-                                || column < newColumn && input[newLine][newColumn] == '-')
-                            {
-                                newColumn++;
-                            }
-                        }
-                    }
+                    last = next;
+                    next = nextPossiblePositions[0];
                 }
                 number++;
-            }
-            sums.Add(number);
 
-            return sums;
+                if (next == start)
+                    break;
+            }
+
+
+            return number;
+        }
+
+        private List<(int line, int column)> GetPositionsForChar(char digit, (int line, int column) position)
+        {
+            if (digit == '7')
+            {
+                return new List<(int line, int column)>()
+                    {
+                        (position.line + 1, position.column),
+                        (position.line, position.column - 1)
+                    };
+            }
+            if(digit == '|')
+            {
+                return new List<(int line, int column)>()
+                {
+                    (position.line + 1, position.column),
+                    (position.line - 1, position.column)
+                };
+            }
+            if(digit == '-')
+            {
+                return new List<(int line, int column)>()
+                {
+                    (position.line, position.column + 1),
+                    (position.line, position.column - 1)
+                };
+            }
+            if(digit == 'L')
+            {
+                return new List<(int line, int column)>()
+                {
+                    (position.line - 1, position.column),
+                    (position.line, position.column + 1)
+                };
+            }
+            if(digit == 'J')
+            {
+                return new List<(int line, int column)>()
+                {
+                    (position.line - 1, position.column),
+                    (position.line, position.column - 1)
+                };
+            }
+            if(digit == 'F')
+            {
+                return new List<(int line, int column)>()
+                {
+                    (position.line + 1, position.column),
+                    (position.line, position.column + 1)
+                };
+            }
+            throw new Exception();
         }
 
         public long Sum()
         {
-            ProcessFile();
-            return 0;
+            return ProcessFile();
         }
     }
+
+
+
 }

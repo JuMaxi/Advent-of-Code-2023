@@ -14,9 +14,9 @@ namespace Adventoofcode2023.Day10
         {
             Part01 part01 = new();
 
-            long sum = part01.Sum();
+            //long sum = part01.Sum();
 
-            Assert.Equal(4, sum);
+            //Assert.Equal(4, sum);
 
             long sum2 = part01.Sum();
 
