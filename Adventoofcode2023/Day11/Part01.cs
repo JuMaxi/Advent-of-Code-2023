@@ -11,7 +11,9 @@ namespace Adventoofcode2023.Day11
     {
         private string[] ReadFile()
         {
-            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day11/sample-day11.txt");
+            //return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day11/sample-day11.txt");
+            return File.ReadAllLines("C:/Dev/Adventoofcode2023/Adventoofcode2023/Day11/input-day11.txt");
+
         }
 
         private List<string> CosmicExpansion()
@@ -101,12 +103,63 @@ namespace Adventoofcode2023.Day11
             return columns;
         }
 
-        public int SumShortestPathBetweenGalaxies()
+        private List<(int, int)> IdentifyPositionGalaxies()
         {
+            List<(int line, int column)> positions = new();
+            
             List<string> expandedUniverse = CosmicExpansion();
 
+            int newColumn = 0;
 
-            return 0;
+            for (int line = 0; line < expandedUniverse.Count; line++)
+            {
+                if (expandedUniverse[line].Substring(newColumn).Contains('#'))
+                {
+                    (int l, int c) p;
+                    p.l = line;
+                    p.c = expandedUniverse[line].Substring(newColumn).IndexOf('#');
+
+                    if(positions.Count > 0 && positions[positions.Count-1].line == line)
+                    {
+                        p.c = p.c + positions[positions.Count-1].column + 1;
+                    }
+
+                    newColumn = p.c + 1;
+                    line--;
+
+                    positions.Add(p);
+                }
+                else
+                {
+                    newColumn = 0;
+                }
+            }
+
+            return positions;
+        }
+        public int SumShortestPathBetweenGalaxies()
+        {   
+            List<(int, int)> positions = IdentifyPositionGalaxies();
+
+            int sum = 0;
+
+            for(int line = 0; line < positions.Count; line++)
+            {
+                for(int peer = line + 1; peer < positions.Count; peer++)
+                {
+                    int differenceLine = positions[peer].Item1 - positions[line].Item1;
+                    int differenceColumn = positions[peer].Item2- positions[line].Item2;
+
+                    if(differenceColumn < 0)
+                    {
+                        differenceColumn = positions[line].Item2 - positions[peer].Item2;
+                    }
+
+                    sum += differenceLine + differenceColumn;
+                }
+            }
+
+            return sum;
         }
 
     }
