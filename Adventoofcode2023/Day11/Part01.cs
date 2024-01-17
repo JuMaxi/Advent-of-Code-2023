@@ -160,6 +160,8 @@ namespace Adventoofcode2023.Day11
             }
 
             return sum;
+
+            //final result is: 9627977
         }
 
     }

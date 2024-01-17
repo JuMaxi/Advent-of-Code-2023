@@ -138,6 +138,7 @@ namespace Adventoofcode2023.Day11
             }
 
             return sum;
+            //final result is: 644248339497
         }
     }
 }
